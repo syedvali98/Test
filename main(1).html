@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style type="text/css">
+        .login-form {
+            width: 340px;
+            margin: 50px auto;
+        }
+
+        .login-form form {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        .login-form h2 {
+            margin: 0 0 15px;
+        }
+
+        .form-control,
+        .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+
+        .btn {
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
+
+    <title>Admin Console</title>
+</head>
+
+<body>
+    <div id="adminLogin" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="login-form">
+                        <h2 class="text-center">Admin</h2>
+                        <div class="form-group">
+                            <!--Change the email in the js adminLogin function too...-->
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail"
+                                value="admin@graphika.com"> </div>
+                        <div class="form-group">
+                            <input type="password" id="adminPassword" class="form-control" placeholder="Password"
+                                required="required">
+                        </div>
+                        <div class="form-group">
+                            <button onclick="adminLogin()" class="btn btn-primary btn-block">Log in</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard" style="display: none;">
+        <div class="container">
+            <div class="row" style="padding-top:25px;">
+                <div class="col-12">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
+                                role="tab" aria-controls="nav-home" aria-selected="true">All Users</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
+                                role="tab" aria-controls="nav-profile" aria-selected="false">Manage User</a>
+                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact"
+                                role="tab" aria-controls="nav-contact" aria-selected="false">Signup</a>
+                            <a class="nav-item nav-link" id="nav-file-tab" data-toggle="tab" href="#nav-file" role="tab"
+                                aria-controls="nav-file" aria-selected="false">File Upload</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                            aria-labelledby="nav-home-tab">
+                            <div id="user-content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Subscription</th>
+                                            <th scope="col">Expiring On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <div id="loader1" class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="container">
+                                <div class="col-9">
+                                    <form style="padding-top:25px;">
+                                        <div class="form-group row">
+                                            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail3"
+                                                    placeholder="Email">
+                                            </div>
+                                        </div>
+                                        <fieldset class="form-group">
+                                            <div class="row">
+                                                <legend class="col-form-label col-sm-2 pt-0">Status</legend>
+                                                <div class="col-sm-10">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="gridRadios"
+                                                            id="gridRadios1" value="option1" checked>
+                                                        <label class="form-check-label" for="gridRadios1">
+                                                            Enable
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="gridRadios"
+                                                            id="gridRadios2" value="option2">
+                                                        <label class="form-check-label" for="gridRadios2">
+                                                            Disable
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                    <button onclick="disableUser()" class="btn btn-primary btn-block">Submit</button>
+                                    <div style="padding:15px" id="disableSuccess" class="alert text-ceter alert-success"
+                                        role="alert">
+                                        Submitted successfully
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-file" role="tabpanel" aria-labelledby="nav-file-tab">
+                            <div class="container">
+                                <p class="text-muted" style="padding-top: 15px;">The Filename should be "cabllink34.m3u"
+                                </p>
+                                <div class="row">
+                                    <div class="mainDiv" style="padding: 5px;">
+                                        <input type="file" id="fileButton" value="upload" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                            <form>
+                                <h2 style="padding:25px 0;">Create a User</h2>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="emailInput2"
+                                        aria-describedby="emailHelp" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="passwordInput2"
+                                        placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Period of Subscription</label>
+                                    <select class="form-control" id="periodInput">
+                                        <option>1 Month</option>
+                                        <option>3 Months</option>
+                                        <option>6 Months</option>
+                                        <option>1 Year</option>
+                                    </select>
+                                </div>
+                            </form>
+                            <button onclick="signupUser()" class="btn btn-primary">Submit</button>
+                            <div class="d-flex justify-content-center">
+                                <div id="loader2" class="spinner-border" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <div style="padding:15px;" id="signupSuccess" class="alert text-ceter alert-success"
+                                role="alert">
+                                Submitted successfully
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-storage.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#dashboard").css("display", "none");
+            $("#adminLogin").css("display", "none");
+            $("#signupSuccess").css("display", "none");
+            $("#loader2").css("display", "none");
+            $("#disableSuccess").css("display", "none");
+            var firebaseConfig = {
+               /* apiKey: "AIzaSyCMyVgE_d7FDgVTOw8xrGGFsN9mQR_Sqxs",
+                authDomain: "cabl-7834e.firebaseapp.com",
+                databaseURL: "https://cabl-7834e.firebaseio.com",
+                projectId: "cabl-7834e",
+                storageBucket: "cabl-7834e.appspot.com",
+                messagingSenderId: "309522593482",
+                appId: "1:309522593482:web:96a6c1bf6c64a9d14c2633",
+                measurementId: "G-MQYYMT102B"
+*/
+                              apiKey: "AIzaSyCVKDFgxtZVBPVnoNMHsqAMLS5k2To-F4Q",
+                              authDomain: "cabl-3cc9c.firebaseapp.com",
+                              databaseURL: "https://cabl-3cc9c.firebaseio.com",
+                              projectId: "cabl-3cc9c",
+                              storageBucket: "cabl-3cc9c.appspot.com",
+                              messagingSenderId: "850844131737",
+                              appId: "1:850844131737:web:0834deaa5d825d399eb308"
+              
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            var usersRef = firebase.database().ref('users');
+            usersRef.once('value').then(function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childData = childSnapshot.val();
+                    if (childData.isSubscribed == true) {
+                        $('tbody').append('<tr><td>' + childData.email + '</td>' + '<td>Active</td>' + '<td>' + childData.expiryDate + '</td></tr>');
+                        $("#loader1").css("display", "none");
+                    }
+                    else {
+                        $('tbody').append('<tr><td>' + childData.email + '</td>' + '<td>InActive</td>' + '<td>' + childData.expiryDate + '</td>+</tr>');
+                        $("#loader1").css("display", "none");
+                    }
+                });
+            });
+
+            // FILE UPLOAD CODE START
+
+            var uploader = document.getElementById('uploader');
+            var fileButton = document.getElementById('fileButton');
+            fileButton.addEventListener('change', function (e) {
+                var file = e.target.files[0];
+                var storageRef = firebase.storage().ref('/' + file.name);
+                var task = storageRef.put(file);
+                task.on('state_changed', function progress(snapshot) {
+                    var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                }, function error(err) {
+                    alert(err)
+                }, function complete() {
+                    alert("success");
+                    storageRef.getDownloadURL().then(function (url) {
+                        console.log(url)
+                        var push = firebase.database().ref('link/');
+                        var pushingData = { url: url }
+                        push.set(pushingData).then(function (success) {
+                            
+                        })
+                        // Get the download URL
+                    });
+                });
+            });
+
+            //FILE UPLOAD CODE END
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    $("#adminLogin").css("display", "none");
+                    $("#dashboard").css("display", "block");
+                } else {
+                    $("#adminLogin").css("display", "block");
+                    $("#dashboard").css("display", "none");
+                }
+            });
+            $("signupSuccess").click(function () {
+                alert("The paragraph was clicked.");
+                $("#loader2").css("display", "block");
+            });
+
+        });
+
+        function disableUser() {
+            var emailInput = $("#inputEmail3").val();
+            if (document.getElementById('gridRadios1').checked) {
+                var db = firebase.database();
+                var query = db.ref("users").orderByChild("email").equalTo(emailInput);
+                query.once("child_added", function (snapshot) {
+                    snapshot.ref.update({ isSubscribed: true })
+                    $('#inputEmail3').val('');
+                    $("#disableSuccess").css("display", "block");
+                    setTimeout(function () {
+                        $("#disableSuccess").css("display", "none");
+                    }, 3000);
+                });
+            }
+            else if (document.getElementById('gridRadios2').checked) {
+                var db = firebase.database();
+                var query = db.ref("users").orderByChild("email").equalTo(emailInput);
+                query.once("child_added", function (snapshot) {
+                    snapshot.ref.update({ isSubscribed: false })
+                    $('#inputEmail3').val('');
+                    $("#disableSuccess").css("display", "block");
+                    setTimeout(function () {
+                        $("#disableSuccess").css("display", "none");
+                    }, 3000);
+                });
+            }
+        }
+        function adminLogin() {
+            var adminEmail = 'admin@graphika.com'
+            var adminPassword = $("#adminPassword").val();
+            firebase.auth().signInWithEmailAndPassword(adminEmail, adminPassword).then(function (success) {
+                $("#adminLogin").css("display", "none");
+                $("#dashboard").css("display", "block");
+            });
+
+        }
+        function signupUser() {
+            var emailInput = $("#emailInput2").val();
+            var passwordInput = $("#passwordInput2").val();
+            firebase.auth().createUserWithEmailAndPassword(emailInput, passwordInput).then(function (success) {
+                var user = firebase.auth().currentUser;
+                var userUid = user.uid;
+                expiry = $("#periodInput").val();
+                date = new Date();
+                if (expiry == '1 Month') {
+                    var expiryDate = new Date(date.setMonth(date.getMonth() + 1));
+                }
+                else if (expiry == '3 Months') {
+                    var expiryDate = new Date(date.setMonth(date.getMonth() + 3));
+                }
+                else if (expiry == '6 Months') {
+                    var expiryDate = new Date(date.setMonth(date.getMonth() + 6));
+                }
+                else if (expiry == '1 Year') {
+                    var expiryDate = new Date(date.setMonth(date.getMonth() + 12));
+                }
+
+                expiringDate = expiryDate.toLocaleDateString();
+                var push = firebase.database().ref('users/' + userUid);
+                var Uname = emailInput.substring(0, emailInput.lastIndexOf("@"));
+                var pushingData = { email: emailInput, isSubscribed: true, signedin: '0', expiryDate: expiringDate, username: Uname };
+                push.set(pushingData).then(function (success) {
+                    $("#signupSuccess").css("display", "block");
+                    $('#emailInput2').val('');
+                    $('#passwordInput2').val('');
+                    passwordInput = "";
+                    setTimeout(function () {
+                        $("#signupSuccess").css("display", "none");
+                    }, 4000);
+
+                })
+            });
+        }
+
+
+    </script>
+
+</body>
+
+</html>
